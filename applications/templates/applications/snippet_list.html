@@ -1,0 +1,57 @@
+{% extends "applications/base.html" %}
+
+{% block title %}Snippets - ApplyShelf{% endblock %}
+
+{% block content %}
+    <h1>Snippets</h1>
+
+    <form class="panel filters" method="get">
+        <label>
+            Search
+            <input type="search" name="q" value="{{ filters.q }}" placeholder="Title, content, notes">
+        </label>
+        <label>
+            Category
+            <select name="category">
+                <option value="">All categories</option>
+                {% for category in categories %}
+                    <option value="{{ category }}" {% if filters.category == category %}selected{% endif %}>{{ category }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            Language
+            <select name="language">
+                <option value="">All languages</option>
+                {% for value, label in language_choices %}
+                    <option value="{{ value }}" {% if filters.language == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            Role track
+            <select name="role_track">
+                <option value="">All tracks</option>
+                {% for value, label in role_track_choices %}
+                    <option value="{{ value }}" {% if filters.role_track == value %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <button type="submit">Filter</button>
+        <a href="{% url 'applications:snippet_list' %}">Clear</a>
+    </form>
+
+    {% if snippets %}
+        <section class="grid">
+            {% for snippet in snippets %}
+                <article class="card">
+                    <h2><a href="{% url 'applications:snippet_detail' snippet.pk %}">{{ snippet.title }}</a></h2>
+                    <p class="muted">{{ snippet.category }} · {{ snippet.get_language_display }} · {{ snippet.get_role_track_display }}</p>
+                    <p>{{ snippet.content|truncatewords:28 }}</p>
+                </article>
+            {% endfor %}
+        </section>
+    {% else %}
+        <p class="muted">No snippets match these filters.</p>
+    {% endif %}
+{% endblock %}

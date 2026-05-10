@@ -1,0 +1,28 @@
+{% extends "applications/base.html" %}
+
+{% block title %}{{ snippet.title }} - ApplyShelf{% endblock %}
+
+{% block content %}
+    <p><a href="{% url 'applications:snippet_list' %}">Back to snippets</a></p>
+
+    <article class="panel">
+        <h1>{{ snippet.title }}</h1>
+        <p class="muted">
+            {{ snippet.category }} · {{ snippet.get_language_display }} · {{ snippet.get_role_track_display }}
+        </p>
+
+        <div class="actions">
+            <button type="button" data-copy-target="#snippet-content">Copy content</button>
+        </div>
+
+        <h2>Content</h2>
+        <div id="snippet-content" class="snippet-content">{{ snippet.content }}</div>
+
+        {% if snippet.notes %}
+            <h2>Notes</h2>
+            <p>{{ snippet.notes|linebreaksbr }}</p>
+        {% endif %}
+
+        <p class="muted">Updated {{ snippet.updated_at|date:"M j, Y H:i" }}</p>
+    </article>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "applications/base.html" %}
+
+{% block title %}ApplyShelf Dashboard{% endblock %}
+
+{% block content %}
+    <h1>ApplyShelf</h1>
+    <p class="muted">A small personal shelf for reusable job application text.</p>
+
+    <section class="grid">
+        <div class="card">
+            <h2>{{ snippet_count }}</h2>
+            <p>Snippets</p>
+        </div>
+        <div class="card">
+            <h2>{{ experience_count }}</h2>
+            <p>Experiences</p>
+        </div>
+        <div class="card">
+            <h2>{{ education_count }}</h2>
+            <p>Education entries</p>
+        </div>
+        <div class="card">
+            <h2>{{ cover_letter_count }}</h2>
+            <p>Cover letters</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Recent snippets</h2>
+        {% if recent_snippets %}
+            <div class="grid">
+                {% for snippet in recent_snippets %}
+                    <article class="card">
+                        <h3><a href="{% url 'applications:snippet_detail' snippet.pk %}">{{ snippet.title }}</a></h3>
+                        <p class="muted">{{ snippet.category }} · {{ snippet.get_language_display }} · {{ snippet.get_role_track_display }}</p>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="muted">No snippets yet. Add your first one in the Django admin.</p>
+        {% endif %}
+    </section>
+{% endblock %}
